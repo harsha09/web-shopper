@@ -5,33 +5,33 @@ const sections = [
   {
     title: "hats",
     imageUrl: "https://i.ibb.co/cvpntL1/hats.png",
-    key: 1,
+    id: 1,
     linkUrl: "shop/hats",
   },
   {
     title: "jackets",
     imageUrl: "https://i.ibb.co/px2tCc3/jackets.png",
-    key: 2,
+    id: 2,
     linkUrl: "shop/jackets",
   },
   {
     title: "sneakers",
     imageUrl: "https://i.ibb.co/0jqHpnp/sneakers.png",
-    key: 3,
+    id: 3,
     linkUrl: "shop/sneakers",
   },
   {
     title: "womens",
     imageUrl: "https://i.ibb.co/GCCdy8t/womens.png",
     size: "large",
-    key: 4,
+    id: 4,
     linkUrl: "shop/womens",
   },
   {
     title: "mens",
     imageUrl: "https://i.ibb.co/R70vBrQ/men.png",
     size: "large",
-    key: 5,
+    id: 5,
     linkUrl: "shop/mens",
   },
 ];
@@ -39,8 +39,8 @@ const sections = [
 const Directory = () => {
   return (
     <div className={styles["directory-menu"]}>
-      {sections.map((menuProps) => (
-        <MenuItem {...menuProps}></MenuItem>
+      {sections.map(({ id, ...menuProps }) => (
+        <MenuItem key={id} {...menuProps}></MenuItem>
       ))}
     </div>
   );
