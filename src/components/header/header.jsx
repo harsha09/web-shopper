@@ -1,12 +1,12 @@
 import { Link } from "react-router-dom";
-import { ReactComponent as Logo } from "../../assets/crown.svg";
+import logo from "../../assets/WebShopper.png";
 import styles from "./header.module.scss";
 
-const Header = () => {
+const Header = ({ onSignOut, curUser, onSignInClick }) => {
   return (
     <div className={styles["header"]}>
-      <Link className={styles["logo-container"]} to="/">
-        <Logo className={styles["logo"]} />
+      <Link to="/">
+        <img className={styles["logo"]} src={logo} alt="Logo" />
       </Link>
       <div className={styles["options"]}>
         <Link className={styles["option"]} to="/shop">
@@ -15,6 +15,17 @@ const Header = () => {
         <Link className={styles["option"]} to="/contact">
           CONTACT
         </Link>
+        <div>
+          {curUser ? (
+            <div className={styles["option"]} onClick={onSignOut}>
+              SIGN OUT
+            </div>
+          ) : (
+            <div className={styles["option"]} onClick={onSignInClick}>
+              SIGN IN
+            </div>
+          )}
+        </div>
       </div>
     </div>
   );

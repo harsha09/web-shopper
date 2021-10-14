@@ -1,10 +1,12 @@
 import styles from "./button.module.scss";
 
-const Button = (props) => {
-    console.log("styles", styles)
+const Button = ({ googleSignIn, children, ...otherProps }) => {
+  const buttonClass = `${googleSignIn ? styles["google-sign-in"] : ""} ${
+    styles.button
+  }`;
   return (
-    <button type="submit" className={styles.button}>
-      {props.children}
+    <button {...otherProps} className={buttonClass}>
+      {children}
     </button>
   );
 };

@@ -2,6 +2,7 @@ import { useState } from "react";
 import Button from "../button/button";
 import FormInput from "../formInput/formInput";
 import styles from "./signIn.module.scss";
+import { signInWithGoogle } from "../../firebase/firebase.utils";
 
 const initCreds = {
   email: "",
@@ -42,7 +43,12 @@ const SignIn = (props) => {
           label="Password"
           required
         />
-        <Button>Sign In</Button>
+        <div className={styles["buttons"]}>
+          <Button type="submit">Sign In</Button>
+          <Button googleSignIn type="button" onClick={signInWithGoogle}>
+            Sign In With Google
+          </Button>
+        </div>
       </form>
     </div>
   );
