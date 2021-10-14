@@ -12,6 +12,13 @@ a {
   box-sizing: border-box;
 }
 
+.webshopper-content {
+  z-index: 5;
+}
+.webshopper-content.active {
+  animation: fadein 300ms 1;
+}
+
 .webshopper-content.inactive {
   animation: fadeout 100ms 1;
   opacity: 0.2;
@@ -24,5 +31,14 @@ a {
   }
   100% {
     opacity: 0.2;
+  }
+}
+
+@keyframes fadein {
+  0% {
+    opacity: 0.2;
+  }
+  100% {
+    opacity: 1;
   }
 }

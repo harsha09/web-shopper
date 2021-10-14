@@ -24,6 +24,14 @@ const SignIn = (props) => {
 
   return (
     <div className={styles["sign-in"]}>
+      <Button
+        className={styles["continue-google-btn"]}
+        googleSignIn
+        type="button"
+        onClick={signInWithGoogle}
+      >
+        Continue With Google
+      </Button>
       <h2>I already have an account</h2>
       <span>Sign-in with your email and password</span>
       <form onSubmit={submitFormHandler}>
@@ -45,9 +53,6 @@ const SignIn = (props) => {
         />
         <div className={styles["buttons"]}>
           <Button type="submit">Sign In</Button>
-          <Button googleSignIn type="button" onClick={signInWithGoogle}>
-            Sign In With Google
-          </Button>
         </div>
       </form>
     </div>

@@ -32,22 +32,23 @@ function App() {
 
   return (
     <>
-      <Header
-        curUser={curUser}
-        onSignInClick={onSignInClickHandler}
-        onSignOut={doSignOut}
-      />
+      <SignInPage {...isSignInClicked} onSignInClose={onSignInCloseHandler} />
       <div
         className={`${"webshopper-content"} ${
-          isSignInClicked.show ? "inactive" : ""
+          isSignInClicked.show ? "inactive" : "active"
         }`}
       >
+        <Header
+          curUser={curUser}
+          onSignInClick={onSignInClickHandler}
+          onSignOut={doSignOut}
+        />
+
         <Switch>
           <Route exact path="/" component={HomePage} />
           <Route exact path="/shop" component={ShopPage} />
         </Switch>
       </div>
-      <SignInPage {...isSignInClicked} onSignInClose={onSignInCloseHandler} />
     </>
   );
 }
