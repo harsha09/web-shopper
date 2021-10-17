@@ -4,38 +4,52 @@ import { Route, Switch } from "react-router-dom";
 import ShopPage from "./pages/shopPage/shopPage";
 import Header from "./components/header/header";
 import SignInPage from "./pages/signInPage/signInPage";
-import { auth } from "./firebase/firebase.utils";
+import { auth, createUserProfileDocument } from "./firebase/firebase.utils";
 import { useEffect, useState } from "react";
 
 function App() {
   const [curUser, setCurUser] = useState(null);
-  const [isSignInClicked, setSignInClicked] = useState({ show: false });
+  const [showSignIn, setShowSignIn] = useState({ show: false });
 
   const doSignOut = () => {
+    setCurUser(null);
     return auth.signOut();
   };
   useEffect(() => {
-    const unSubscribeFromAuth = auth.onAuthStateChanged((user) => {
-      setCurUser(user);
-      console.log(user);
+    const unSubscribeFromAuth = auth.onAuthStateChanged(async (user) => {
+      if (user) {
+        const userRef = await createUserProfileDocument(user);
+        userRef.onSnapshot((snapshot) => {
+          setCurUser(
+            {
+              id: snapshot.id,
+              ...snapshot.data(),
+            },
+            setShowSignIn({ show: false })
+          );
+        });
+      }
     });
-    return unSubscribeFromAuth;
+
+    return () => {
+      unSubscribeFromAuth();
+    };
   }, []);
 
   const onSignInClickHandler = () => {
-    setSignInClicked({ show: true });
+    setShowSignIn({ show: true });
   };
 
   const onSignInCloseHandler = () => {
-    setSignInClicked({ show: false });
+    setShowSignIn({ show: false });
   };
 
   return (
     <>
-      <SignInPage {...isSignInClicked} onSignInClose={onSignInCloseHandler} />
+      <SignInPage {...showSignIn} onSignInClose={onSignInCloseHandler} />
       <div
         className={`${"webshopper-content"} ${
-          isSignInClicked.show ? "inactive" : "active"
+          showSignIn.show ? "inactive" : "active"
         }`}
       >
         <Header

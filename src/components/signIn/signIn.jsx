@@ -2,7 +2,7 @@ import { useState } from "react";
 import Button from "../button/button";
 import FormInput from "../formInput/formInput";
 import styles from "./signIn.module.scss";
-import { signInWithGoogle } from "../../firebase/firebase.utils";
+import { signInWithEmailAndPassword, signInWithGoogle } from "../../firebase/firebase.utils";
 
 const initCreds = {
   email: "",
@@ -12,9 +12,12 @@ const initCreds = {
 const SignIn = (props) => {
   const [creds, setCreds] = useState(initCreds);
 
-  const submitFormHandler = (event) => {
+  const submitFormHandler = async (event) => {
     event.preventDefault();
-    setCreds(initCreds);
+    const user = await signInWithEmailAndPassword(creds.email, creds.password);
+    if (user) {
+      setCreds(initCreds);
+    }
   };
 
   const inputFieldChangeHandler = (event) => {
@@ -24,16 +27,18 @@ const SignIn = (props) => {
 
   return (
     <div className={styles["sign-in"]}>
+      <span className={styles["new-user"]} onClick={props.onNewUserClick}>
+        {props.newUserLabel}
+      </span>
+      <h2>Sign In</h2>
       <Button
         className={styles["continue-google-btn"]}
         googleSignIn
         type="button"
         onClick={signInWithGoogle}
       >
-        Continue With Google
+        Sign in with Google
       </Button>
-      <h2>I already have an account</h2>
-      <span>Sign-in with your email and password</span>
       <form onSubmit={submitFormHandler}>
         <FormInput
           onChange={inputFieldChangeHandler}
