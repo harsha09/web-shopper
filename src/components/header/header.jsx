@@ -1,8 +1,9 @@
 import { Link } from "react-router-dom";
+import { connect } from "react-redux";
 import logo from "../../assets/WebShopper.png";
 import styles from "./header.module.scss";
 
-const Header = ({ onSignOut, curUser, onSignInClick }) => {
+const Header = ({ onSignOut, currentUser, onSignInClick }) => {
   return (
     <div className={styles["header"]}>
       <Link to="/">
@@ -16,7 +17,7 @@ const Header = ({ onSignOut, curUser, onSignInClick }) => {
           CONTACT
         </Link>
         <div>
-          {curUser ? (
+          {currentUser ? (
             <div className={styles["option"]} onClick={onSignOut}>
               SIGN OUT
             </div>
@@ -31,4 +32,6 @@ const Header = ({ onSignOut, curUser, onSignInClick }) => {
   );
 };
 
-export default Header;
+const mapStateToProps = (state) => ({ currentUser: state.user.currentUser });
+
+export default connect(mapStateToProps)(Header);

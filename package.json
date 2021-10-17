@@ -38,6 +38,9 @@
     ]
   },
   "devDependencies": {
-    "firebase": "^9.1.2"
+    "firebase": "^9.1.2",
+    "react-redux": "^7.2.5",
+    "redux": "^4.1.1",
+    "redux-logger": "^3.0.6"
   }
 }

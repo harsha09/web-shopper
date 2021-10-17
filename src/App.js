@@ -1,18 +1,20 @@
 import "./App.css";
 import HomePage from "./pages/homePage/homePage";
 import { Route, Switch } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { connect } from "react-redux";
+
 import ShopPage from "./pages/shopPage/shopPage";
 import Header from "./components/header/header";
 import SignInPage from "./pages/signInPage/signInPage";
+import setCurrentUser from "./redux/user/user.actions";
 import { auth, createUserProfileDocument } from "./firebase/firebase.utils";
-import { useEffect, useState } from "react";
 
-function App() {
-  const [curUser, setCurUser] = useState(null);
+function App(props) {
   const [showSignIn, setShowSignIn] = useState({ show: false });
 
   const doSignOut = () => {
-    setCurUser(null);
+    props.setCurrentUser(null);
     return auth.signOut();
   };
   useEffect(() => {
@@ -20,7 +22,7 @@ function App() {
       if (user) {
         const userRef = await createUserProfileDocument(user);
         userRef.onSnapshot((snapshot) => {
-          setCurUser(
+          props.setCurrentUser(
             {
               id: snapshot.id,
               ...snapshot.data(),
@@ -29,6 +31,7 @@ function App() {
           );
         });
       }
+      props.setCurrentUser(user);
     });
 
     return () => {
@@ -52,11 +55,7 @@ function App() {
           showSignIn.show ? "inactive" : "active"
         }`}
       >
-        <Header
-          curUser={curUser}
-          onSignInClick={onSignInClickHandler}
-          onSignOut={doSignOut}
-        />
+        <Header onSignInClick={onSignInClickHandler} onSignOut={doSignOut} />
 
         <Switch>
           <Route exact path="/" component={HomePage} />
@@ -67,4 +66,8 @@ function App() {
   );
 }
 
-export default App;
+const mapDispatchToProps = (dispatch) => ({
+  setCurrentUser: (user) => dispatch(setCurrentUser(user)),
+});
+
+export default connect(null, mapDispatchToProps)(App);
